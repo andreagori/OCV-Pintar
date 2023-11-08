@@ -1,2 +1,2 @@
 # OCV-Pintar
-proyecto opencv para C
+Proyecto de OpenCV para la clase de Lenguaje C - 932
