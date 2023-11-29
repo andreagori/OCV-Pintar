@@ -91,15 +91,19 @@ while True:
             canvas = np.zeros((480, 640, 3), dtype=np.uint8)
             drawing_coords = []  # Limpiar las coordenadas del dibujo cuando entras en el modo de dibujo
 
-    # Cambiar el color al hacer clic con el botón derecho
+    # Cambiar el color al hacer presionar las siguientes teclas.
     elif key == ord('r'):
         drawing_color = (0, 0, 255)  # Rojo
     elif key == ord('g'):
         drawing_color = (0, 255, 0)  # Verde
     elif key == ord('b'):
         drawing_color = (255, 0, 0)  # Azul
+    elif key == ord('a'):
+        drawing_color = (255, 0, 255)  # Rosa
+    elif key == ord('c'):
+        drawing_color = (255, 255, 0) # Cyan
     elif key == ord('m'):
-        drawing_color = (255, 0, 255)  # Morado
+        drawing_color = (128, 0, 128) # Morado
     elif key == ord('y'):
         drawing_color = (0, 255, 255)  # Amarillo
 
