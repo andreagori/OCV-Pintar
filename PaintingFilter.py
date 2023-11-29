@@ -13,18 +13,21 @@ drawing_mode = False
 drawing_coords = []
 drawing_radius = 10  # Radio inicial del círculo
 drawing_color = (0, 255, 0)  # Color inicial (verde)
+prev_drawing_color = drawing_color  # Almacena el color anterior
+color_history = []  # Historial de colores para cada punto dibujado
 
 # Factor de escala inicial (puedes ajustarlo según tus necesidades)
 initial_scale_factor = 0.8
 
 # Función de retroalimentación del mouse
 def draw_circle(event, x, y, flags, param):
-    global drawing_mode, canvas, drawing_coords, drawing_radius, drawing_color
+    global drawing_mode, canvas, drawing_coords, drawing_radius, drawing_color, color_history
 
     if drawing_mode:
         if event == cv2.EVENT_LBUTTONDOWN or (event == cv2.EVENT_MOUSEMOVE and flags == cv2.EVENT_FLAG_LBUTTON):
             cv2.circle(canvas, (x, y), drawing_radius, drawing_color, -1)
             drawing_coords.append((x, y))
+            color_history.append(drawing_color)
 
 # Configurar la ventana y vincular la función del mouse
 cv2.namedWindow('Camera')
@@ -55,8 +58,8 @@ while True:
         result = cv2.addWeighted(overlay, 0.5, frame, 0.5, 0)
 
         # Dibujar el contenido del dibujo en la posición actual
-        for coord in drawing_coords:
-            cv2.circle(result, coord, drawing_radius, drawing_color, -1)
+        for coord, color in zip(drawing_coords, color_history):
+            cv2.circle(result, coord, drawing_radius, color, -1)
 
     else:
         result = frame.copy()
@@ -69,13 +72,12 @@ while True:
             # Calcular el factor de escala basado en el tamaño de la cara
             scale_factor = initial_scale_factor * (w + h) / 400.0  # Puedes ajustar 400 según tus necesidades
 
-            for coord in drawing_coords:
+            for coord, color in zip(drawing_coords, color_history):
                 adjusted_coord = (
                     int(face_center[0] + scale_factor * (coord[0] - 320)),
                     int(face_center[1] + scale_factor * (coord[1] - 240))
                 )
-                cv2.circle(result, adjusted_coord, int(drawing_radius * scale_factor), drawing_color, -1)
-
+                cv2.circle(result, adjusted_coord, int(drawing_radius * scale_factor), color, -1)
 
     # Agregar leyenda de teclas en la parte superior
     cv2.putText(result, "Presiona 'p' para cambiar modo, 'r' para Rojo, 'g' para Verde, 'b' para Azul,", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
@@ -96,6 +98,7 @@ while True:
         if drawing_mode:
             canvas = np.zeros((480, 640, 3), dtype=np.uint8)
             drawing_coords = []  # Limpiar las coordenadas del dibujo cuando entras en el modo de dibujo
+            color_history = []  # Limpiar el historial de colores
 
     # Cambiar el color al hacer presionar las siguientes teclas.
     elif key == ord('r'):
