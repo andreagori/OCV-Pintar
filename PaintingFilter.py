@@ -76,6 +76,12 @@ while True:
                 )
                 cv2.circle(result, adjusted_coord, int(drawing_radius * scale_factor), drawing_color, -1)
 
+
+    # Agregar leyenda de teclas en la parte superior
+    cv2.putText(result, "Presiona 'p' para cambiar modo, 'r' para Rojo, 'g' para Verde, 'b' para Azul,", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
+    cv2.putText(result, "'a' para Rosa, 'c' para Cyan, 'm' para Morado, 'y' para Amarillo,", (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
+    cv2.putText(result, "'q' para salir", (10, 90), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
+
     # Mostrar la imagen resultante
     cv2.imshow('Camera', result)
 
@@ -101,9 +107,9 @@ while True:
     elif key == ord('a'):
         drawing_color = (255, 0, 255)  # Rosa
     elif key == ord('c'):
-        drawing_color = (255, 255, 0) # Cyan
+        drawing_color = (255, 255, 0)  # Cyan
     elif key == ord('m'):
-        drawing_color = (128, 0, 128) # Morado
+        drawing_color = (128, 0, 128)  # Morado
     elif key == ord('y'):
         drawing_color = (0, 255, 255)  # Amarillo
 
